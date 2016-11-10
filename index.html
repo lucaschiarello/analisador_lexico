@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analisador Léxico - Lucas Chiarello</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="assets/css/vendor.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/flat-admin.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+  <!-- Theme -->
+  <link rel="stylesheet" type="text/css" href="assets/css/theme/blue-sky.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/theme/blue.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/theme/red.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/theme/yellow.css">
+
+</head>
+<body>
+  <div class="app app-default">
+
+<div class="app-container">
+
+  <nav class="navbar navbar-default" id="navbar">
+  <div class="container-fluid">
+    <div class="navbar-collapse collapse in">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="navbar-title"><span class="highlight">Linguagens Formais</span><span>&nbsp;Analisador Léxico</span></li>
+        <!-- <li class="navbar-search hidden-sm">
+          <input id="search" type="text" placeholder="Search..">
+          <button class="btn-search"><i class="fa fa-search"></i></button>
+        </li> -->
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown notification danger">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <div class="icon"><i class="fa fa-cog" aria-hidden="true"></i></div>
+            <div class="title">Configurações</div>
+            <!-- <div class="count">10</div> -->
+          </a>
+          <div class="dropdown-menu">
+            <ul>
+              <li class="dropdown-header">Configurações</li>
+              <li>
+                <a href="#">
+                  <span class="badge badge-danger pull-right">8</span>
+                  <div class="message">
+                    <div class="content">
+                      <div class="title">New Order</div>
+                      <div class="description">$400 total</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="badge badge-danger pull-right">14</span>
+                  Inbox
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="badge badge-danger pull-right">5</span>
+                  Issues Report
+                </a>
+              </li>
+              <li class="dropdown-footer">
+                <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="dropdown profile">
+          <a href="/html/pages/profile.html" class="dropdown-toggle"  data-toggle="dropdown">
+            <img class="profile-img" src="assets/images/logo.png">
+            <div class="title">Profile</div>
+          </a>
+          <div class="dropdown-menu">
+            <div class="profile-info">
+              <h4 class="username">Lucas Chiarello</h4>
+            </div>
+            <ul class="action">
+            
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          Elementos Básicos
+        </div>
+        <div class="card-body body-wrapper">
+          <div class="col-md-6">
+            <div class="cleafix">
+              <div class="col-sm-9 padding-zero">
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon1">
+                    <i class="fa fa-search-plus" aria-hidden="true"></i>
+                  </span>
+                  <input id="input-insere" onkeyup="removeCaracteres();" type="text" class="form-control" placeholder="Inserir Token" aria-describedby="basic-addon1" value="">
+                </div>
+              </div>
+              <div class="col-sm-3 padding-zero align-center">
+                <button type="button" class="btn btn-info" onclick="insereToken();">Inserir</button>
+              </div>
+            </div>
+            <table class="table card-table">
+              <thead>
+                <tr>
+                  <th>Token</th>
+                  <th width="40">Ação</th>
+                </tr>
+              </thead>
+              <tbody id="table-tokens">
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-md-6">
+            <div class="cleafix">
+              <div class="col-sm-9 padding-zero">
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon1">
+                    <i class="fa fa-search" aria-hidden="true"></i></span>
+                  <input type="text" id="buscar" class="form-control" placeholder="Buscar Token" aria-describedby="basic-addon1" value="">
+                </div>
+              </div>
+              <div class="col-sm-3 padding-zero align-center">
+                <button type="button" class="btn btn-info">Limpar</button>
+              </div>
+            </div>
+            <table class="table card-table">
+              <thead>
+                <tr>
+                  <th>Token</th>
+                  <th width="40">Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- <tr>
+                  <td>MicroSD 64Gb</td>
+                  <td><span class="badge badge-success badge-icon"><i class="fa fa-check" aria-hidden="true"></i><span>Complete</span></span></td>
+                </tr>
+                <tr>
+                  <td>MiniPC i5</td>
+                  <td><span class="badge badge-warning badge-icon"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Pending</span></span></td>
+                </tr>
+                <tr>
+                  <td>Mountain Bike</td>
+                  <td><span class="badge badge-info badge-icon"><i class="fa fa-credit-card" aria-hidden="true"></i><span>Confirm Payment</span></span></td>
+                </tr>
+                <tr>
+                  <td>Notebook</td>
+                  <td><span class="badge badge-danger badge-icon"><i class="fa fa-times" aria-hidden="true"></i><span>Cancelled</span></span></td>
+                </tr>
+                <tr>
+                  <td>Raspberry Pi2</td>
+                  <td><span class="badge badge-primary badge-icon"><i class="fa fa-truck" aria-hidden="true"></i><span>Shipped</span></span></td>
+                </tr>
+                <tr>
+                  <td>Flashdrive 128Mb</td>
+                  <td><span class="badge badge-info badge-icon"><i class="fa fa-credit-card" aria-hidden="true"></i><span>Confirm Payment</span></span></td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          Tabela de Estados
+        </div>
+        <div class="card-body">
+          <table id="automato" class="table table-striped table-bordered table-hover"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  
+  <script type="text/javascript" src="assets/js/vendor.js"></script>
+  <script type="text/javascript" src="assets/js/app.js"></script>
+  <script type="text/javascript" src="assets/js/scripts.js"></script>
+
+</body>
+</html>
