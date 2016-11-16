@@ -32,44 +32,6 @@
         </li> -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown notification danger">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <div class="icon"><i class="fa fa-cog" aria-hidden="true"></i></div>
-            <div class="title">Configurações</div>
-            <!-- <div class="count">10</div> -->
-          </a>
-          <div class="dropdown-menu">
-            <ul>
-              <li class="dropdown-header">Configurações</li>
-              <li>
-                <a href="#">
-                  <span class="badge badge-danger pull-right">8</span>
-                  <div class="message">
-                    <div class="content">
-                      <div class="title">New Order</div>
-                      <div class="description">$400 total</div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="badge badge-danger pull-right">14</span>
-                  Inbox
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="badge badge-danger pull-right">5</span>
-                  Issues Report
-                </a>
-              </li>
-              <li class="dropdown-footer">
-                <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
-              </li>
-            </ul>
-          </div>
-        </li>
         <li class="dropdown profile">
           <a href="/html/pages/profile.html" class="dropdown-toggle"  data-toggle="dropdown">
             <img class="profile-img" src="assets/images/logo.png">
@@ -125,14 +87,14 @@
           <div class="col-md-6">
             <div class="cleafix">
               <div class="col-sm-9 padding-zero">
-                <div class="input-group">
+                <div id="box" class="input-group">
                   <span class="input-group-addon" id="basic-addon1">
                     <i class="fa fa-search" aria-hidden="true"></i></span>
                   <input type="text" id="buscar" class="form-control" placeholder="Buscar Token" aria-describedby="basic-addon1" value="">
                 </div>
               </div>
               <div class="col-sm-3 padding-zero align-center">
-                <button type="button" class="btn btn-info">Limpar</button>
+                <button type="button" onclick="clearSearch();" class="btn btn-info">Limpar</button>
               </div>
             </div>
             <table class="table card-table">
@@ -142,7 +104,7 @@
                   <th width="40">Ação</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="table-search">
                 <!-- <tr>
                   <td>MicroSD 64Gb</td>
                   <td><span class="badge badge-success badge-icon"><i class="fa fa-check" aria-hidden="true"></i><span>Complete</span></span></td>

@@ -7,7 +7,7 @@
 .align-center{
 	text-align: center;
 }
-.badge{
+#table-tokens .badge{
 	cursor: pointer;
 }
 .estado_selecionado td,
@@ -18,9 +18,15 @@
 	color: #fff;
 	background: rgba(17,163,247,0.7);
 }
-#buscar.acerto{
-	background: green;
+#box.acerto,
+#box.acerto input{
+	border-color: #27ae60;
+	color: #27ae60;
+	background: rgba(39, 174, 96, 0.1);
 }
-#buscar.erro{
-	background: red;
+#box.erro,
+#box.erro input{
+	border-color: #e74c3c;
+	color: #e74c3c;
+	background: rgba(231, 76, 60, 0.1);
 }

@@ -8,7 +8,7 @@ function insereToken(){
 	var token = $("#input-insere").val();
 	if(token) { //Testa se tem algo escrito(válido)
 		if (Tokens.indexOf(token) < 0 && token.length > 0) { //Testa se ja existe a palavra no dicionário
-			$("#table-tokens").append("<tr><td>"+token+"</td><td><span class='badge badge-danger badge-icon' onclick=\"removeToken('"+token+"')\"><i class='fa fa-times' aria-hidden='true'></i><span>Remover</span></span></td></tr>")
+			$("#table-tokens").append("<tr class=tk-"+token+"><td>"+token+"</td><td><span class='badge badge-danger badge-icon' onclick=\"removeToken('"+token+"')\"><i class='fa fa-times' aria-hidden='true'></i><span>Remover</span></span></td></tr>")
 			Tokens.push(token);
 			$("#input-insere").val("");
 		}
@@ -24,20 +24,55 @@ function insereToken(){
 	});
 }
 
+/**
+ * Remove caracteres quando o usuário digita errado
+ */
 function removeCaracteres(){
+	var primeiro = 'a';
+	var ultimo = 'z';
 	var token = $("#input-insere").val();
-	if (token.slice(-1) == " ") {
-		$("#input-insere").val(token.replace(' ', ''));
+
+	if (token.slice(-1) == " " || !(token.slice(-1).charCodeAt(0) >= primeiro.slice(-1).charCodeAt(0) && token.slice(-1).charCodeAt(0) <= ultimo.slice(-1).charCodeAt(0))) {
+		$("#input-insere").val(token.replace(token.slice(-1), ''));
 	}
 }
 
+/**
+ * Remove token da Array Tokens
+ * @param String token 
+ * @return Nova tabela formatada
+ */
 function removeToken(token){
-	alert(token);
+	var index = Tokens.indexOf(token);
+	if (index >= 0 && token.length > 0) {
+		Tokens.splice(index, 1);
+		$(".tk-"+token).hide();
+	}
+
+	//Limpa tudo e refaz
+	$("#automato").html("");
+	Estados = [[]];
+	EstadoGlobal = 0;
+	EstadoIteracao = [0];
+	Tabela = [];
+	monta_estados();
+	Tabela = gerar_linhas();
+	tabela_para_html(Tabela);
 }
 
-/*
-	Esta função monta os estados a partir das palavras adicionadas ao discionário
-*/
+/**
+ * Limpa todas as buscas realizadas
+ */
+function clearSearch(){
+	var r = confirm("Tem certeza que deseja limpar a busca?");
+	if (r == true) {
+		$("#table-search").html("");
+	}
+}
+
+/**
+ * Monta os estados a partir dos tokens digitados
+ */
 function monta_estados(){
 	for (var i = 0; i < Tokens.length; i++) {
 		var estado_atual = 0;
@@ -59,7 +94,9 @@ function monta_estados(){
 	};
 }
 
-// monta a tabela do autômato
+/**
+ * Monta as linhas da tabela
+ */
 function gerar_linhas(){
 	var vetor_estados = [];
 	for (var i = 0; i < Estados.length; i++) {
@@ -84,6 +121,9 @@ function gerar_linhas(){
 	return vetor_estados;
 }
 
+/**
+ * Transfere para o html a tabela
+ */
 function tabela_para_html(vetor_estados){
 	tabela = $('#automato');
 	tabela.html('');
@@ -127,45 +167,64 @@ function tabela_para_html(vetor_estados){
 	}
 }
 
-// Valida as entradas vindas do campo de digitação
+/**
+ * Valida as entradas vindas do campo de digitação
+ * @param String event 
+ */
 function valida_palavra(event){
 	var primeiro = 'a'; // Para saber se o que está digitado é válido
 	var ultimo = 'z';
 	var palavras = $('#buscar').val(); // Pega o valor do campo
 	if(palavras.length == 0){ // Verifica se o campo está vazio, assim ele reseta todos os efeitos na tabela
-		$('#buscar').removeClass('acerto');
-		$('#buscar').removeClass('erro');
+		$('#box').removeClass('acerto');
+		$('#box').removeClass('erro');
 		$('#automato tr').removeClass('estado_selecionado');
 		$('#automato td').removeClass('letra_selecionada');
 	}
 	var estado = 0; // Inicia a verificação pelo estado inicial
+	var letter_error = false;
 	for (var i = 0; i < palavras.length; i++) {
 		// Verifica se o dígito está entre a - z
-		if(palavras[i].charCodeAt(0) >= primeiro.charCodeAt(0) && palavras[i].charCodeAt(0) <= ultimo.charCodeAt(0)){
+		if(palavras[i].charCodeAt(0) >= primeiro.charCodeAt(0) && palavras[i].charCodeAt(0) <= ultimo.charCodeAt(0) && letter_error == false){
 			highlightState(estado, palavras[i]);
 			if(Tabela[estado][palavras[i]] != '-'){ // se o estado não for de erro, ele aceita
 				estado = Tabela[estado][palavras[i]];
 				inAccept();
 			} else { // Rejeita caso o estado seja de erro
 				inError();
-				break;
+				letter_error = true;
+				// break;
 			}
 		} else if(palavras[i] == ' '){ // Caso tenha digitado um espaço
+			if (letter_error == false) {
+				if (Tabela[estado]['final']) { //Se o estado for final da Encontrado se não da Estado não final
+					$("#table-search").append("<tr><td>"+palavras+"</td><td><span class='badge badge-success badge-icon'><i class='fa fa-check' aria-hidden='true'></i><span>Encontrada</span></span></td></tr>")
+				} else {
+					$("#table-search").append("<tr><td>"+palavras+"</td><td><span class='badge badge-warning badge-icon'><i class='fa fa-times' aria-hidden='true'></i><span>Estado não final</span></span></td></tr>")
+				}
+			} else {
+				$("#table-search").append("<tr><td>"+palavras+"</td><td><span class='badge badge-danger badge-icon'><i class='fa fa-times' aria-hidden='true'></i><span>Não Encontrada</span></span></td></tr>")
+			}
+			$('#box').removeClass('acerto');
+			$('#box').removeClass('erro');
+			$('#automato tr').removeClass('estado_selecionado');
+			$('#automato td').removeClass('letra_selecionada');
 			$('#buscar').val("");
-		} else {
-			alert('Caractere fora da extensão: ' + palavras[i]); // Se for digitado um caractere fora do epaço de a até z ele dá mensagem dizend oque é inválido
-			break;
+		} else if(letter_error == false) {
+			inError();
+			alert('Caractere fora da extensão: ' + palavras[i]); // Se for digitado um caractere fora do epaço de a até z ele dá mensagem dizendo é inválido
+			// break;
 		}
 	};
 }
 
 function inError(){
-	$('#buscar').removeClass('acerto');
-	$('#buscar').addClass('erro');
+	$('#box').removeClass('acerto');
+	$('#box').addClass('erro');
 }
 function inAccept(){
-	$('#buscar').addClass('acerto');
-	$('#buscar').removeClass('erro');
+	$('#box').addClass('acerto');
+	$('#box').removeClass('erro');
 }
 
 function highlightState(state, letter){
